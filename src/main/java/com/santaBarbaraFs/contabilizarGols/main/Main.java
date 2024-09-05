@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedWriter;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -20,7 +23,7 @@ public class Main implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         int op = 0;
-        while (op != 4) {
+        while (op != 5) {
             System.out.println("""
                      ____       ______      __  __      ______    ______        ____       ______      ____        ____       ______      ____        ______        ____     ____      \s
                     /\\  _`\\    /\\  _  \\    /\\ \\/\\ \\    /\\__  _\\  /\\  _  \\      /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _  \\      /\\  _`\\  /\\  _`\\    \s
@@ -37,7 +40,8 @@ public class Main implements CommandLineRunner {
                             1 - Adicionar jogador
                             2 - Remover jogador
                             3 - Atualizar dados de jogador
-                            4 - Sair
+                            4 - Mostrar artilharia
+                            5 - Sair
                             """);
             System.out.println("=========================================================");
             System.out.print("Opção: ");
@@ -89,6 +93,46 @@ public class Main implements CommandLineRunner {
                     break;
 
                 case 4:
+
+                    System.out.println("""
+                            Dejesa ordenar a lista por:
+                            1 - GOl
+                            2 - ASSISTENCIA
+                            3 - G/A
+                            """);
+                    System.out.println("=========================================================");
+                    System.out.print("Opção: ");
+                    op = tc.nextInt();
+
+                    List<Jogador> lista_jogadores = jogadorRepository.findAll();
+                    if (op == 1) {
+                        lista_jogadores.sort(Comparator.comparingInt(Jogador::getGol).reversed());
+                        for (Jogador j : lista_jogadores) {
+                            while (j.getNome().length() < 8) {
+                                j.setNome(j.getNome() + " ");
+                            }
+                            System.out.println(j);
+                        }
+                    }else if (op == 2) {
+                        lista_jogadores.sort(Comparator.comparingInt(Jogador::getAss).reversed());
+                        for (Jogador j : lista_jogadores) {
+                            while(j.getNome().length() < 8) {
+                                j.setNome(j.getNome()+" ");
+                            }
+                            System.out.println(j);
+                        }
+                    }else if (op == 3) {
+                        lista_jogadores.sort(Comparator.comparingInt(Jogador::getGa).reversed());
+                        for (Jogador j : lista_jogadores) {
+                            while(j.getNome().length() < 8) {
+                                j.setNome(j.getNome()+" ");
+                            }
+                            System.out.println(j);
+                        }
+                    }
+                    break;
+
+                case 5:
                     System.out.println("\nEncerrando atualizações... Até a próxima!");
                     break;
 

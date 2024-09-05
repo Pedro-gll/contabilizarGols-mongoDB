@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 @Document(collection = "jogador")
@@ -56,6 +57,8 @@ public class Jogador implements Serializable {
         return ass;
     }
 
+
+
     public void setAss(Integer ass) {
         this.ass = ass;
         atualizarGa();
@@ -80,5 +83,12 @@ public class Jogador implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("00");
+        return  nome.toUpperCase() + " | Gols: " + df.format(gol) + " | Ass: " + df.format(ass) + " | G/A: " +df.format(gA);
+
     }
 }
