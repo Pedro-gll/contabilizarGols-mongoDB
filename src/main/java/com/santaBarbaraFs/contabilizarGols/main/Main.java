@@ -1,6 +1,7 @@
 package com.santaBarbaraFs.contabilizarGols.main;
 
 import com.santaBarbaraFs.contabilizarGols.entites.Jogador;
+import com.santaBarbaraFs.contabilizarGols.entites.JogadorFuncoes;
 import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -109,12 +110,12 @@ public class Main implements CommandLineRunner {
                     op = tc.nextInt();
 
                     List<Jogador> lista_jogadores = jogadorRepository.findAll();
-                    Jogador jog = new Jogador();
+                    JogadorFuncoes jog = new JogadorFuncoes();
                     jog.ordenar(lista_jogadores, op);
                     break;
 
                 case 5:
-                    Jogador jogador1 = new Jogador();
+                    JogadorFuncoes jogador1 = new JogadorFuncoes();
                     List<Jogador> lista_jogadores1 = jogadorRepository.findAll();
                     jogador1.criarExcel(lista_jogadores1);
                     break;
