@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +26,7 @@ public class Main implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         int op = 0;
-        while (op != 5) {
+        while (op != 6) {
             System.out.println("""
                      ____       ______      __  __      ______    ______        ____       ______      ____        ____       ______      ____        ______        ____     ____      \s
                     /\\  _`\\    /\\  _  \\    /\\ \\/\\ \\    /\\__  _\\  /\\  _  \\      /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _  \\      /\\  _`\\  /\\  _`\\    \s
@@ -41,7 +44,8 @@ public class Main implements CommandLineRunner {
                             2 - Remover jogador
                             3 - Atualizar dados de jogador
                             4 - Mostrar artilharia
-                            5 - Sair
+                            5 - Criar tabela Excel
+                            6 - Sair
                             """);
             System.out.println("=========================================================");
             System.out.print("Opção: ");
@@ -105,36 +109,22 @@ public class Main implements CommandLineRunner {
                     op = tc.nextInt();
 
                     List<Jogador> lista_jogadores = jogadorRepository.findAll();
-                    if (op == 1) {
-                        lista_jogadores.sort(Comparator.comparingInt(Jogador::getGol).reversed());
-                        for (Jogador j : lista_jogadores) {
-                            while (j.getNome().length() < 8) {
-                                j.setNome(j.getNome() + " ");
-                            }
-                            System.out.println(j);
-                        }
-                    }else if (op == 2) {
-                        lista_jogadores.sort(Comparator.comparingInt(Jogador::getAss).reversed());
-                        for (Jogador j : lista_jogadores) {
-                            while(j.getNome().length() < 8) {
-                                j.setNome(j.getNome()+" ");
-                            }
-                            System.out.println(j);
-                        }
-                    }else if (op == 3) {
-                        lista_jogadores.sort(Comparator.comparingInt(Jogador::getGa).reversed());
-                        for (Jogador j : lista_jogadores) {
-                            while(j.getNome().length() < 8) {
-                                j.setNome(j.getNome()+" ");
-                            }
-                            System.out.println(j);
-                        }
-                    }
+                    Jogador jog = new Jogador();
+                    jog.ordenar(lista_jogadores, op);
                     break;
 
                 case 5:
+                    Jogador jogador1 = new Jogador();
+                    List<Jogador> lista_jogadores1 = jogadorRepository.findAll();
+                    jogador1.criarExcel(lista_jogadores1);
+                    break;
+
+                case 6:
                     System.out.println("\nEncerrando atualizações... Até a próxima!");
                     break;
+
+
+
 
                 default:
                     System.out.println("\nOpção inválida! Por favor, tente novamente.");
