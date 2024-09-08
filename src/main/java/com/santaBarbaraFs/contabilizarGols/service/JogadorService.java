@@ -23,6 +23,14 @@ public class JogadorService {
         return jogador.orElseThrow(() -> new RuntimeException("Objeto não encontrado"));
     }
 
+    public Jogador findByNome(String nome){
+        List<Jogador> jogador = jogadorRepository.findByNome(nome);
+        if(jogador.isEmpty()){
+            throw new RuntimeException("Jogador com "+ nome+" não encontrado");
+        }
+        return jogador.get(0);
+    }
+
     public Jogador inserir(Jogador jogador){
         return jogadorRepository.save(jogador);
     }

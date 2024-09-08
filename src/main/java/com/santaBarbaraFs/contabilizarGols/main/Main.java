@@ -6,12 +6,7 @@ import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Comparator;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -76,25 +71,55 @@ public class Main implements CommandLineRunner {
                     break;
 
                 case 3:
-                    System.out.print("Digite o ID do jogador a ser atualizado: ");
-                    id = tc.next();
+                    System.out.println("Dejesa atualizar manualmente ou enviar uma lista? " +
+                            "[1] - Manualmente/ [2] - Lista");
+                    int n = tc.nextInt();
+                    if (n == 1) {
+                        System.out.print("Digite o ID do jogador a ser atualizado: ");
+                        id = tc.next();
 
-                    Jogador jogador = jogadorRepository.findById(id).orElse(null);
+                        Jogador jogador = jogadorRepository.findById(id).orElse(null);
 
-                    if (jogador != null) {
-                        System.out.print("Gols: ");
-                        int gols = tc.nextInt();
-                        System.out.print("Assistências: ");
-                        int assistencias = tc.nextInt();
+                        if (jogador != null) {
+                            System.out.print("Gols: ");
+                            int gols = tc.nextInt();
+                            System.out.print("Assistências: ");
+                            int assistencias = tc.nextInt();
 
-                        jogador.setGol(jogador.getGol() + gols);
-                        jogador.setAss(jogador.getAss() + assistencias);
+                            jogador.setGol(jogador.getGol() + gols);
+                            jogador.setAss(jogador.getAss() + assistencias);
 
-                        jogadorRepository.save(jogador);
-                        System.out.println("\nJogador atualizado com sucesso!");
-                    } else {
-                        System.out.println("\nJogador com ID '" + id + "' não encontrado!");
+                            jogadorRepository.save(jogador);
+                            System.out.println("\nJogador atualizado com sucesso!");
+                        } else {
+                            System.out.println("\nJogador com ID '" + id + "' não encontrado!");
+                        }
+                    }else{
+                        try (BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\ADM\\Desktop\\testeAtua.txt"))) {
+                            String linha;
+
+                            while ((linha = bf.readLine()) != null) {
+                                String[] split = linha.split(",");
+                                String nome1 = split[0];
+                                int gol = Integer.parseInt(split[1]);
+                                int ass = Integer.parseInt(split[2]);
+
+                                List<Jogador> lista_jogadores2 = jogadorRepository.findByNome(nome1);
+
+                                if (!lista_jogadores2.isEmpty()){
+                                    Jogador j = lista_jogadores2.get(0);
+
+                                    j.setGol(j.getGol()+gol);
+                                    j.setAss(j.getAss()+ass);
+
+                                    jogadorRepository.save(j);
+                                }
+                            }
+                        } catch (IOException e) {
+                            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+                        }
                     }
+
                     break;
 
                 case 4:
@@ -123,9 +148,6 @@ public class Main implements CommandLineRunner {
                 case 6:
                     System.out.println("\nEncerrando atualizações... Até a próxima!");
                     break;
-
-
-
 
                 default:
                     System.out.println("\nOpção inválida! Por favor, tente novamente.");

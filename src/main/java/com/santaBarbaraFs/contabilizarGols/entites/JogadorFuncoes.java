@@ -1,13 +1,16 @@
 package com.santaBarbaraFs.contabilizarGols.entites;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
+
 
 public class JogadorFuncoes extends Jogador{
+    Scanner tc = new Scanner(System.in);
+    JogadorRepository jogadorRepository;
     public void ordenar(List<Jogador> jogadores, int valor) {
         switch (valor) {
             case 1:
@@ -33,7 +36,7 @@ public class JogadorFuncoes extends Jogador{
 
     public void criarExcel(List<Jogador> jogadores) {
         String path = "C:\\Users\\ADM\\Desktop\\input2.csv";
-        //jogadores = jogadorRepository.findAll();
+        jogadores = jogadorRepository.findAll();
 
         try(BufferedWriter bf = new BufferedWriter(new FileWriter(path, StandardCharsets.UTF_8))) {
             bf.write("Id; Nome; Gol; Ass; G/A");

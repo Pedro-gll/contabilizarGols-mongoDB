@@ -29,6 +29,16 @@ public class JogadorResource {
        return ResponseEntity.ok().body(jogador);
     }
 
+    @GetMapping("/{nome}")
+    public ResponseEntity<Jogador> findByNome(@PathVariable String nome) {
+        try {
+            Jogador jogador = jogadorService.findByNome(nome);
+            return ResponseEntity.ok().body(jogador);
+        }catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Jogador> save(@RequestBody Jogador jogador) {
        Jogador obj = jogadorService.inserir(jogador);
