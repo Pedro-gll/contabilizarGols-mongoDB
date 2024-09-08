@@ -3,7 +3,11 @@ package com.santaBarbaraFs.contabilizarGols.entites;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 @Document(collection = "jogador")
@@ -15,8 +19,12 @@ public class Jogador implements Serializable {
     private String nome;
     private Integer gol = 0;
     private Integer ass = 0;
+    private Integer gol = 0;
+    private Integer ass = 0;
     private Integer gA = 0;
 
+    public Jogador() {
+    }
     public Jogador() {
     }
 
@@ -63,9 +71,12 @@ public class Jogador implements Serializable {
     }
 
     public Integer getGa() {
+    public Integer getGa() {
         return gA;
     }
 
+    private void atualizarGa() {
+        this.gA = this.gol + this.ass;
     private void atualizarGa() {
         this.gA = this.gol + this.ass;
     }
@@ -87,6 +98,12 @@ public class Jogador implements Serializable {
         public String toString () {
             DecimalFormat df = new DecimalFormat("00");
             return nome.toUpperCase() + " | Gols: " + df.format(gol) + " | Ass: " + df.format(ass) + " | G/A: " + df.format(gA);
+        public String toString () {
+            DecimalFormat df = new DecimalFormat("00");
+            return nome.toUpperCase() + " | Gols: " + df.format(gol) + " | Ass: " + df.format(ass) + " | G/A: " + df.format(gA);
+
+        }
+    }
 
         }
     }

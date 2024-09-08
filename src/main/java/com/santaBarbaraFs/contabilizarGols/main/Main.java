@@ -2,6 +2,7 @@ package com.santaBarbaraFs.contabilizarGols.main;
 
 import com.santaBarbaraFs.contabilizarGols.entites.Jogador;
 import com.santaBarbaraFs.contabilizarGols.entites.JogadorFuncoes;
+import com.santaBarbaraFs.contabilizarGols.entites.JogadorFuncoes;
 import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +24,7 @@ public class Main implements CommandLineRunner {
 
         int op = 0;
         while (op != 6) {
+        while (op != 6) {
             System.out.println("""
                      ____       ______      __  __      ______    ______        ____       ______      ____        ____       ______      ____        ______        ____     ____      \s
                     /\\  _`\\    /\\  _  \\    /\\ \\/\\ \\    /\\__  _\\  /\\  _  \\      /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _  \\      /\\  _`\\  /\\  _`\\    \s
@@ -40,6 +42,8 @@ public class Main implements CommandLineRunner {
                             2 - Remover jogador
                             3 - Atualizar dados de jogador
                             4 - Mostrar artilharia
+                            5 - Criar tabela Excel
+                            6 - Sair
                             5 - Criar tabela Excel
                             6 - Sair
                             """);
@@ -137,6 +141,8 @@ public class Main implements CommandLineRunner {
                     List<Jogador> lista_jogadores = jogadorRepository.findAll();
                     JogadorFuncoes jog = new JogadorFuncoes();
                     jog.ordenar(lista_jogadores, op);
+                    JogadorFuncoes jog = new JogadorFuncoes();
+                    jog.ordenar(lista_jogadores, op);
                     break;
 
                 case 5:
@@ -146,8 +152,17 @@ public class Main implements CommandLineRunner {
                     break;
 
                 case 6:
+                    JogadorFuncoes jogador1 = new JogadorFuncoes();
+                    List<Jogador> lista_jogadores1 = jogadorRepository.findAll();
+                    jogador1.criarExcel(lista_jogadores1);
+                    break;
+
+                case 6:
                     System.out.println("\nEncerrando atualizações... Até a próxima!");
                     break;
+
+
+
 
                 default:
                     System.out.println("\nOpção inválida! Por favor, tente novamente.");
