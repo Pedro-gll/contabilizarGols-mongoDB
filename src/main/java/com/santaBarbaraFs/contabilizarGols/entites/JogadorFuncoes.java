@@ -1,4 +1,4 @@
-package com.santaBarbaraFs.contabilizarGols.entites;
+/*package com.santaBarbaraFs.contabilizarGols.entites;
 
 import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import java.io.*;
@@ -53,4 +53,4 @@ public class JogadorFuncoes extends Jogador{
             System.out.println("Erro ao escrever o arquivo: "+e.getMessage());
         }
     }
-}
+}*/
