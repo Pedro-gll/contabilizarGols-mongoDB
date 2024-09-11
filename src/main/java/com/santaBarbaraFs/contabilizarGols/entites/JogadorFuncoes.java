@@ -36,7 +36,7 @@ public class JogadorFuncoes {
             System.out.println("\nJogador atualizado com sucesso!");
         } else {
         System.out.println("\nJogador com ID '" + id + "' não encontrado!");
-    }
+        }
     }
 
     public void atualizarPorLista(String path){

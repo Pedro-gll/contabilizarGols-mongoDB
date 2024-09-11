@@ -2,6 +2,7 @@ package com.santaBarbaraFs.contabilizarGols.service;
 
 import com.santaBarbaraFs.contabilizarGols.entites.Jogador;
 import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
+import com.santaBarbaraFs.contabilizarGols.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class JogadorService {
 
     public Jogador findById(String id){
         Optional<Jogador> jogador = jogadorRepository.findById(id);
-        return jogador.orElseThrow(() -> new RuntimeException("Objeto não encontrado"));
+        return jogador.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 
     public Jogador findByNome(String nome){

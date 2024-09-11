@@ -29,7 +29,7 @@ public class JogadorResource {
        return ResponseEntity.ok().body(jogador);
     }
 
-    @GetMapping("/{nome}")
+    @GetMapping("/nome/{nome}")
     public ResponseEntity<Jogador> findByNome(@PathVariable String nome) {
         try {
             Jogador jogador = jogadorService.findByNome(nome);
