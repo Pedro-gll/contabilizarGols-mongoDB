@@ -1,6 +1,7 @@
 package com.santaBarbaraFs.contabilizarGols.main;
 
 import com.santaBarbaraFs.contabilizarGols.entites.Jogador;
+import com.santaBarbaraFs.contabilizarGols.entites.JogadorFuncoes;
 import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,14 +17,16 @@ public class Main implements CommandLineRunner {
 
     @Autowired
     private JogadorRepository jogadorRepository;
+    @Autowired
+    private JogadorFuncoes fun;
 
     @Override
     public void run(String... args) throws Exception {
         String path = "C:\\Users\\ADM\\Desktop\\jogadores.csv";
+        String pathLista ="C:\\Users\\ADM\\Desktop\\testeAtua.txt";
+        String id;
 
-        int op = 0;
-        while (op != 6) {
-            System.out.println("""
+        System.out.println("""
                      ____       ______      __  __      ______    ______        ____       ______      ____        ____       ______      ____        ______        ____     ____      \s
                     /\\  _`\\    /\\  _  \\    /\\ \\/\\ \\    /\\__  _\\  /\\  _  \\      /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _`\\    /\\  _  \\    /\\  _`\\     /\\  _  \\      /\\  _`\\  /\\  _`\\    \s
                     \\ \\,\\L\\_\\  \\ \\ \\L\\ \\   \\ \\ `\\\\ \\   \\/_/\\ \\/  \\ \\ \\L\\ \\     \\ \\ \\L\\ \\  \\ \\ \\L\\ \\   \\ \\ \\L\\ \\   \\ \\ \\L\\ \\  \\ \\ \\L\\ \\   \\ \\ \\L\\ \\   \\ \\ \\L\\ \\     \\ \\ \\L\\_\\\\ \\,\\L\\_\\  \s
@@ -31,6 +34,9 @@ public class Main implements CommandLineRunner {
                        /\\ \\L\\ \\  \\ \\ \\/\\ \\   \\ \\ \\`\\ \\     \\ \\ \\   \\ \\ \\/\\ \\     \\ \\ \\L\\ \\  \\ \\ \\/\\ \\   \\ \\ \\\\ \\    \\ \\ \\L\\ \\  \\ \\ \\/\\ \\   \\ \\ \\\\ \\    \\ \\ \\/\\ \\     \\ \\ \\/    /\\ \\L\\ \\\s
                        \\ `\\____\\  \\ \\_\\ \\_\\   \\ \\_\\ \\_\\     \\ \\_\\   \\ \\_\\ \\_\\     \\ \\____/   \\ \\_\\ \\_\\   \\ \\_\\ \\_\\   \\ \\____/   \\ \\_\\ \\_\\   \\ \\_\\ \\_\\   \\ \\_\\ \\_\\     \\ \\_\\    \\ `\\____\\
                         \\/_____/   \\/_/\\/_/    \\/_/\\/_/      \\/_/    \\/_/\\/_/      \\/___/     \\/_/\\/_/    \\/_/\\/ /    \\/___/     \\/_/\\/_/    \\/_/\\/ /    \\/_/\\/_/      \\/_/     \\/_____/ """);
+
+        int op = 0;
+        while (op != 6) {
             System.out.println("\n========================================================");
             System.out.println("   Bem-vindo ao Sistema de Gerenciamento de Jogadores   ");
             System.out.println("========================================================");
@@ -53,71 +59,25 @@ public class Main implements CommandLineRunner {
                 case 1:
                     System.out.print("Digite o nome do jogador: ");
                     String nome = tc.nextLine();
-                    Jogador obj = new Jogador(null, nome, 0, 0);
-                    jogadorRepository.save(obj);
-                    System.out.println("\nJogador '" + nome + "' adicionado com sucesso!");
+                    fun.adicionar(nome);
                     break;
 
                 case 2:
                     System.out.print("Digite o ID do jogador para deletar: ");
-                    String id = tc.next();
-                    Optional<Jogador> obj2 = jogadorRepository.findById(id);
-                    if (obj2.isPresent()) {
-                        jogadorRepository.delete(obj2.get());
-                        System.out.println("\nJogador removido com sucesso!");
-                    } else {
-                        System.out.println("\nJogador com ID '" + id + "' não encontrado!");
-                    }
+                    id = tc.next();
+                    fun.deletar(id);
                     break;
-
                 case 3:
                     System.out.println("Dejesa atualizar manualmente ou enviar uma lista? " +
-                            "[1] - Manualmente/ [2] - Lista");
+                            "[1] - Manualmente || [2] - Lista");
+
                     int n = tc.nextInt();
+
                     if (n == 1) {
-                        System.out.print("Digite o ID do jogador a ser atualizado: ");
-                        id = tc.next();
+                       fun.atualizarManualmente();
 
-                        Jogador jogador = jogadorRepository.findById(id).orElse(null);
-
-                        if (jogador != null) {
-                            System.out.print("Gols: ");
-                            int gols = tc.nextInt();
-                            System.out.print("Assistências: ");
-                            int assistencias = tc.nextInt();
-
-                            jogador.setGol(jogador.getGol() + gols);
-                            jogador.setAss(jogador.getAss() + assistencias);
-
-                            jogadorRepository.save(jogador);
-                            System.out.println("\nJogador atualizado com sucesso!");
-                        } else {
-                            System.out.println("\nJogador com ID '" + id + "' não encontrado!");
-                        }
                     }else{
-                        try (BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\ADM\\Desktop\\testeAtua.txt"))) {
-                            String linha;
-
-                            while ((linha = bf.readLine()) != null) {
-                                String[] split = linha.split(",");
-                                String nome1 = split[0];
-                                int gol = Integer.parseInt(split[1]);
-                                int ass = Integer.parseInt(split[2]);
-
-                                List<Jogador> lista_jogadores2 = jogadorRepository.findByNome(nome1);
-
-                                if (!lista_jogadores2.isEmpty()){
-                                    Jogador j = lista_jogadores2.get(0);
-
-                                    j.setGol(j.getGol()+gol);
-                                    j.setAss(j.getAss()+ass);
-
-                                    jogadorRepository.save(j);
-                                }
-                            }
-                        } catch (IOException e) {
-                            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
-                        }
+                       fun.atualizarPorLista(pathLista);
                     }
 
                     break;
@@ -135,14 +95,12 @@ public class Main implements CommandLineRunner {
                     op = tc.nextInt();
 
                     List<Jogador> lista_jogadores = jogadorRepository.findAll();
-                    Jogador jog = new Jogador();
-                    jog.ordenar(lista_jogadores, op);
+                    fun.ordenar(lista_jogadores, op);
                     break;
 
                 case 5:
-                    Jogador jogador1 = new Jogador();
                     List<Jogador> lista_jogadores1 = jogadorRepository.findAll();
-                    jogador1.criarExcel(lista_jogadores1,path);
+                    fun.criarExcel(lista_jogadores1,path);
                     break;
 
                 case 6:
