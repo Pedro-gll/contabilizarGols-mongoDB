@@ -5,7 +5,6 @@ import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import com.santaBarbaraFs.contabilizarGols.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

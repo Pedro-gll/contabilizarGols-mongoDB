@@ -6,9 +6,7 @@ import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import java.io.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 @Component
@@ -76,7 +74,7 @@ public class Main implements CommandLineRunner {
                     if (n == 1) {
                        fun.atualizarManualmente();
 
-                    }else{
+                    }else if(n == 2){
                        fun.atualizarPorLista(pathLista);
                     }
 

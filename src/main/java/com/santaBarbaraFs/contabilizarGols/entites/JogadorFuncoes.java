@@ -3,7 +3,6 @@ package com.santaBarbaraFs.contabilizarGols.entites;
 import com.santaBarbaraFs.contabilizarGols.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
@@ -44,23 +43,42 @@ public class JogadorFuncoes {
             String linha;
 
             while ((linha = bf.readLine()) != null) {
-                String[] split = linha.split(",");
-                String nome1 = split[0];
-                int gol = Integer.parseInt(split[1]);
-                int ass = Integer.parseInt(split[2]);
+                String[] split = linha.split("-");
+                String gol = split[0].trim();
+                //String ass = split[1].trim();
 
-                List<Jogador> lista_jogadores2 = jogadorRepository.findByNome(nome1);
+                List<Jogador> lista_jogadores_gol = jogadorRepository.findByNome(gol);
 
-                if (!lista_jogadores2.isEmpty()){
-                    Jogador j = lista_jogadores2.get(0);
+                if (!lista_jogadores_gol.isEmpty()){
+                    Jogador j = lista_jogadores_gol.get(0);
 
-                    j.setGol(j.getGol()+gol);
-                    j.setAss(j.getAss()+ass);
+                    j.setGol(j.getGol()+1);
+
 
                     jogadorRepository.save(j);
                 }
+
+                //List<Jogador> lista_jogadores_ass = jogadorRepository.findByNome(ass);
+
+                if(split.length > 1){
+                    String ass = split[1].trim();
+                    if(!ass.isEmpty()){
+                        List<Jogador> lista_jogadores_ass = jogadorRepository.findByNome(ass);
+                        if (!lista_jogadores_ass.isEmpty()){
+                            Jogador j = lista_jogadores_ass.get(0);
+                            j.setAss(j.getAss()+1);
+                            jogadorRepository.save(j);
+                        }else {
+                            System.out.println("Jogador nao encontrado");
+                        }
+                    }
+                }
             }
-        } catch (IOException e) {
+            try (PrintWriter writer = new PrintWriter(path)) {
+                writer.print("");
+            }
+        }
+        catch (IOException e) {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
         }
     }
